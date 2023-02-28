@@ -84,6 +84,16 @@ const config: HardhatUserConfig = {
         count: 10
       }
     },
+    // Base Goerli Testnet
+    basegoerli: {
+      url: `${process.env.provider_basegoerli}`,
+      accounts: {
+        mnemonic: `${process.env.mnemonic_basegoerli}`,
+        path: "m/44'/60'/0'/0",
+        initialIndex: 0,
+        count: 10
+      }
+    },
 
     // hederatestnet: {
     //   url: `${process.env.provider_hederatestnet}`,
