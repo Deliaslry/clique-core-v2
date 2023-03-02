@@ -11,7 +11,7 @@ const main = async ({
     const { deployer, admin } = await getNamedAccounts();
     console.log(`04 - Deploying DAOAirdrop Logic on ${network.name}`);
 
-    const daoFactory = await deployments.get('DAOFactory');
+    const daoFactory = await deployments.get('DAOFactoryLogic');
 
     const daoAirdrop = await deploy('DAOAirdropLogic', {
         contract: 'DAOAirdrop',

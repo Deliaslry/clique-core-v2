@@ -98,19 +98,19 @@ contract DAOFactory is OwnableUpgradeable, IDAOFactory {
         );
         require(isSigner(ECDSAUpgradeable.recover(_hash, signature_)), 'DAOFactory: invalid signer.');
 
-        // address _daoAddress = daoImpl.clone();
-        // IDAOBase(_daoAddress).initialize(general_, token_, governance_);
-        // OwnableUpgradeable(_daoAddress).transferOwnership(msg.sender);
+        address _daoAddress = daoImpl.clone();
+        IDAOBase(_daoAddress).initialize(general_, token_, governance_);
+        OwnableUpgradeable(_daoAddress).transferOwnership(msg.sender);
 
         // using proxy
-        TransparentUpgradeableProxy _proxy = new TransparentUpgradeableProxy(daoImpl, proxyAdminAddress, '');
-        IDAOBase(address(_proxy)).initialize(general_, token_, governance_);
-        OwnableUpgradeable(address(_proxy)).transferOwnership(msg.sender);
+        // TransparentUpgradeableProxy _proxy = new TransparentUpgradeableProxy(daoImpl, proxyAdminAddress, '');
+        // IDAOBase(address(_proxy)).initialize(general_, token_, governance_);
+        // OwnableUpgradeable(address(_proxy)).transferOwnership(msg.sender);
 
         handles[general_.handle] = true;
-        _daoAddresses[address(_proxy)] = true;
+        _daoAddresses[_daoAddress] = true;
 
-        emit CreateDAO(uint256(_handleHash), msg.sender, address(_proxy), token_.chainId, token_.tokenAddress);
+        emit CreateDAO(uint256(_handleHash), msg.sender, _daoAddress, token_.chainId, token_.tokenAddress);
     }
 
     function upgradeProxy(address payable daoAddress_) external {
