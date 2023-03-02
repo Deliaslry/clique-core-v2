@@ -27,7 +27,7 @@ const main = async ({
         logicDAOBase.address,
         logicERC20Base.address
     ];
-    // await DAOFactory.initialize(logicDAOBase.address,logicERC20Base.address)
+    await DAOFactory.initialize(logicDAOBase.address,logicERC20Base.address)
     const tx = await DAOFactory.setSigner(SIGNER, true)
 
     try {

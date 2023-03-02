@@ -4,6 +4,7 @@ pragma solidity =0.8.9;
 import "./interfaces/IDAOBase.sol";
 import "./interfaces/IERC20Base.sol";
 import "./interfaces/IDAOFactory.sol";
+import "./DAOBase.sol";
 import '@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol';
 import '@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol';
 import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
@@ -98,14 +99,19 @@ contract DAOFactory is OwnableUpgradeable, IDAOFactory {
         );
         require(isSigner(ECDSAUpgradeable.recover(_hash, signature_)), 'DAOFactory: invalid signer.');
 
-        address _daoAddress = daoImpl.clone();
-        IDAOBase(_daoAddress).initialize(general_, token_, governance_);
-        OwnableUpgradeable(_daoAddress).transferOwnership(msg.sender);
+        // address _daoAddress = daoImpl.clone();
+        // IDAOBase(_daoAddress).initialize(general_, token_, governance_);
+        // OwnableUpgradeable(_daoAddress).transferOwnership(msg.sender);
 
         // using proxy
         // TransparentUpgradeableProxy _proxy = new TransparentUpgradeableProxy(daoImpl, proxyAdminAddress, '');
         // IDAOBase(address(_proxy)).initialize(general_, token_, governance_);
         // OwnableUpgradeable(address(_proxy)).transferOwnership(msg.sender);
+
+        DAOBase _dao = new DAOBase();
+        _dao.initialize(general_, token_, governance_);
+        address _daoAddress = address(_dao);
+        OwnableUpgradeable(_daoAddress).transferOwnership(msg.sender);
 
         handles[general_.handle] = true;
         _daoAddresses[_daoAddress] = true;
